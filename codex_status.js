@@ -21,7 +21,9 @@ const DEFAULT_AUTH_PATH = path.join(
 );
 
 async function main() {
-  const { authPaths: parsedPaths, tailMode } = parseArgs(process.argv.slice(2));
+  const { authPaths: parsedPaths, tailMode: requestedTail, jsonMode } = parseArgs(
+    process.argv.slice(2),
+  );
   let authPaths = parsedPaths;
   if (authPaths.length === 0) {
     if (!(await fileExists(DEFAULT_AUTH_PATH))) {
@@ -33,6 +35,7 @@ async function main() {
     authPaths = [DEFAULT_AUTH_PATH];
   }
 
+  const tailMode = requestedTail && !jsonMode;
   const abortController = new AbortController();
 
   const renderOnce = async (signal) => {
@@ -57,6 +60,12 @@ async function main() {
     ensureNotAborted(signal);
     return results;
   };
+
+  if (jsonMode) {
+    const results = await renderOnce(abortController.signal);
+    console.log(JSON.stringify(results, null, 2));
+    return;
+  }
 
   if (!tailMode) {
     const results = await renderOnce(abortController.signal);
@@ -113,6 +122,7 @@ async function runTailLoop(renderOnce, quitPromise, signal) {
 function parseArgs(args) {
   const authPaths = [];
   let tailMode = false;
+  let jsonMode = false;
   for (let i = 0; i < args.length; i += 1) {
     const arg = args[i];
     if (arg === '--help' || arg === '-h') {
@@ -120,6 +130,8 @@ function parseArgs(args) {
       process.exit(0);
     } else if (arg === '--tail') {
       tailMode = true;
+    } else if (arg === '--json') {
+      jsonMode = true;
     } else if (arg.startsWith('--auth=')) {
       const value = arg.slice('--auth='.length).trim();
       if (!value) throw new Error('--auth requires a file path');
@@ -129,10 +141,12 @@ function parseArgs(args) {
       if (!value) throw new Error('--auth requires a file path');
       authPaths.push(value);
     } else {
-      throw new Error(`Unknown argument: ${arg}. Only --auth=<path> and --tail are supported.`);
+      throw new Error(
+        `Unknown argument: ${arg}. Supported flags: --auth=<path>, --auth <path>, --tail, --json.`,
+      );
     }
   }
-  return { authPaths, tailMode };
+  return { authPaths, tailMode, jsonMode };
 }
 
 async function collectUsageForAuth(authPath, signal) {
@@ -374,9 +388,10 @@ function base64UrlDecode(segment) {
 
 function printUsage() {
   console.log(
-    'Usage: node scripts/codex_status.js [--tail] --auth=/path/to/auth.json [--auth=/path/to/other.json]\n' +
+    'Usage: node scripts/codex_status.js [--tail] [--json] --auth=/path/to/auth.json [--auth=/path/to/other.json]\n' +
       'Reads one or more Codex auth.json files, refreshes expired ChatGPT tokens when needed, and prints rate-limit stats for each.\n' +
-      'When --tail is provided, the display refreshes every 30 seconds in place (press q to exit).',
+      'When --tail is provided, the display refreshes every 30 seconds in place (press q to exit).\n' +
+      'When --json is provided, a single JSON payload is printed and the program exits.',
   );
 }
 
