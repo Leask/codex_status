@@ -388,7 +388,7 @@ function base64UrlDecode(segment) {
 
 function printUsage() {
   const lines = [
-    'codex_status.js - Inspect ChatGPT usage rate limits from auth.json files',
+    'codex_status.js - A simple tool to check Codex usage',
     '',
     'Usage:',
     '  node codex_status.js [OPTIONS]',
