@@ -1,4 +1,4 @@
-# codex-check
+# >_ codex-check
 
 A simple tool to check Codex usage and monitor ChatGPT/Codex rate limits from Codex CLI `auth.json` files.
 
