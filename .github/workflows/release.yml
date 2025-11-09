@@ -24,7 +24,8 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
       - name: Bump patch version
-        run: npm version patch -m "chore: release v%s"
+        run: |
+          npm version patch -m "chore: release v%s"
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
