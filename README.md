@@ -1,4 +1,4 @@
-# codex_status
+# codex-check
 
 A simple tool to check Codex usage and monitor ChatGPT/Codex rate limits from Codex CLI `auth.json` files.
 
@@ -12,19 +12,19 @@ A simple tool to check Codex usage and monitor ChatGPT/Codex rate limits from Co
 ## Installation
 
 ```bash
-npm install -g codex_status
+npm install -g codex-check
 ```
 
 Or run directly without installing:
 
 ```bash
-npx codex_status --auth ~/.codex/auth.json
+npx codex-check --auth ~/.codex/auth.json
 ```
 
 ## Usage
 
 ```bash
-codex_status --auth ~/.codex/auth.json [--auth /path/to/other.json] [--tail] [--json]
+codex-check --auth ~/.codex/auth.json [--auth /path/to/other.json] [--tail] [--json]
 ```
 
 ### Options
@@ -37,9 +37,9 @@ codex_status --auth ~/.codex/auth.json [--auth /path/to/other.json] [--tail] [--
 ### Examples
 
 ```bash
-codex_status --auth ~/.codex/auth.json
-codex_status --tail --auth ~/.codex/auth.json --auth /tmp/team.json
-codex_status --json --auth ~/.codex/auth.json > usage.json
+codex-check --auth ~/.codex/auth.json
+codex-check --tail --auth ~/.codex/auth.json --auth /tmp/team.json
+codex-check --json --auth ~/.codex/auth.json > usage.json
 ```
 
 ## Development

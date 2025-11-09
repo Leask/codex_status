@@ -1,11 +1,11 @@
 {
-  "name": "codex_status",
+  "name": "codex-check",
   "version": "1.0.0",
   "description": "",
   "main": "index.mjs",
   "type": "module",
   "bin": {
-    "codex_status": "./index.mjs"
+    "codex-check": "index.mjs"
   },
   "scripts": {
     "start": "node index.mjs",
