@@ -2,12 +2,16 @@
   "name": "codex_status",
   "version": "1.0.0",
   "description": "",
-  "main": "codex_status.mjs",
+  "main": "index.mjs",
+  "type": "module",
+  "bin": {
+    "codex_status": "./index.mjs"
+  },
   "scripts": {
+    "start": "node index.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "type": "module"
+  "license": "ISC"
 }
